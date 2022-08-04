@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="1" failures="0" name="jda.test.app.courseman.qproc.query.ObjectJoinExpressionTest" time="0.156" errors="1" skipped="0">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="java.vm.version" value="13.0.2+8"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-13.0.2\bin"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\jdomainapp\jda"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.script" value=""/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="user.dir" value="C:\jdomainapp\jda"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.runtime.version" value="13.0.2+8"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\vinhs\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="classworlds.conf" value="C:\app\apache-maven-3.6.3\bin\..\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-13.0.2\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Java\jdk-13.0.2\bin\;C:\app\apache-maven-3.6.3\bin\;C:\Program Files\nodejs\;C:\app\apache-zookeeper-3.6.3-bin\bin\;;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\PuTTY\;C:\Users\vinhs\AppData\Local\Microsoft\WindowsApps;C:\Users\vinhs\AppData\Roaming\npm;C:\Users\vinhs\AppData\Local\GitHubDesktop\bin;C:\Users\vinhs\AppData\Local\Programs\MiKTeX\miktex\bin\x64\;."/>
+    <property name="maven.conf" value="C:\app\apache-maven-3.6.3\bin\../conf"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="java.class.version" value="57.0"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.0"/>
+    <property name="library.jansi.path" value="C:\app\apache-maven-3.6.3\bin\..\lib\jansi-native"/>
+    <property name="user.home" value="C:\Users\vinhs"/>
+    <property name="user.timezone" value="Asia/Bangkok"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.specification.version" value="13"/>
+    <property name="user.name" value="vinhs"/>
+    <property name="java.class.path" value="C:\app\apache-maven-3.6.3\bin\..\boot\plexus-classworlds-2.6.0.jar"/>
+    <property name="java.vm.specification.version" value="13"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install -U"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-13.0.2"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.version" value="13.0.2"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="sun.stderr.encoding" value="cp437"/>
+    <property name="maven.home" value="C:\app\apache-maven-3.6.3\bin\.."/>
+    <property name="file.separator" value="\"/>
+    <property name="java.version.date" value="2020-01-14"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.stdout.encoding" value="cp437"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase classname="jda.test.app.courseman.qproc.query.ObjectJoinExpressionTest" name="doTest" time="0.156">
+    <error message="[DataSourceException.FAIL_TO_UPDATE_OBJECT_BY_QUERY] Lỗi cập nhật dữ liệu bằng truy vấn: create table test_basic.Student(id varchar(6),name varchar(30),dob varchar(15),address_id Int,email varchar(30),sclass_id Int,constraint test_basic_Studentpk primary key(id),constraint test_basic_Studentfk1 foreign key(address_id) references test_basic.City(id) on update restrict,constraint test_basic_Studentfk2 foreign key(sclass_id) references test_basic.SClass(id) on update restrict) (dòng dữ liệu: )" type="jda.modules.common.exceptions.DataSourceException">jda.modules.common.exceptions.DataSourceException: [DataSourceException.FAIL_TO_UPDATE_OBJECT_BY_QUERY] Lỗi cập nhật dữ liệu bằng truy vấn: create table test_basic.Student(id varchar(6),name varchar(30),dob varchar(15),address_id Int,email varchar(30),sclass_id Int,constraint test_basic_Studentpk primary key(id),constraint test_basic_Studentfk1 foreign key(address_id) references test_basic.City(id) on update restrict,constraint test_basic_Studentfk2 foreign key(sclass_id) references test_basic.SClass(id) on update restrict) (dòng dữ liệu: )
+	at jda.modules.dodm.osm.relational.RelationalOSMBasic.executeUpdate(RelationalOSMBasic.java:532)
+	at jda.modules.dodm.osm.relational.RelationalOSMBasic.createClassStore(RelationalOSMBasic.java:6814)
+	at jda.modules.dodm.dom.DOMBasic.addClass(DOMBasic.java:577)
+	at jda.modules.dodm.DODMBasic.addClass(DODMBasic.java:363)
+	at jda.test.dodm.DODMBasicTester.registerClass(DODMBasicTester.java:373)
+	at jda.test.dodm.DODMBasicTester.registerClass(DODMBasicTester.java:359)
+	at jda.test.app.courseman.qproc.query.ObjectJoinExpressionTest.doTest(ObjectJoinExpressionTest.java:24)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: java.sql.SQLException: Constraint &apos;TEST_BASIC_STUDENTFK1&apos; is invalid: referenced table CITY does not exist.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(SQLExceptionFactory.java:115)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Util.java:230)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(TransactionResourceImpl.java:431)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(TransactionResourceImpl.java:360)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(EmbedConnection.java:2405)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(ConnectionChild.java:88)
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(EmbedStatement.java:697)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeLargeUpdate(EmbedStatement.java:183)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeUpdate(EmbedStatement.java:172)
+	at jda.modules.dodm.osm.relational.RelationalOSMBasic.executeUpdate(RelationalOSMBasic.java:529)
+	... 39 more
+Caused by: ERROR X0Y46: Constraint &apos;TEST_BASIC_STUDENTFK1&apos; is invalid: referenced table CITY does not exist.
+	at org.apache.derby.shared.common.error.StandardException.newException(StandardException.java:300)
+	at org.apache.derby.shared.common.error.StandardException.newException(StandardException.java:295)
+	at org.apache.derby.impl.sql.compile.FKConstraintDefinitionNode.bind(FKConstraintDefinitionNode.java:102)
+	at org.apache.derby.impl.sql.compile.TableElementList.validate(TableElementList.java:235)
+	at org.apache.derby.impl.sql.compile.CreateTableNode.bindStatement(CreateTableNode.java:394)
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(GenericStatement.java:401)
+	at org.apache.derby.impl.sql.GenericStatement.prepare(GenericStatement.java:99)
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(GenericLanguageConnectionContext.java:1114)
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(EmbedStatement.java:689)
+	... 42 more
+</error>
+    <system-out>ObjectJoinExpressionTest.registerClass(class jda.test.model.basic.SClass)
+ObjectJoinExpressionTest.registerClass(class jda.test.model.basic.Student)
+</system-out>
+  </testcase>
+</testsuite>
