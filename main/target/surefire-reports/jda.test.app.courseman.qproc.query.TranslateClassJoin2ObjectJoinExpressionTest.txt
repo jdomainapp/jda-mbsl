@@ -1,0 +1,138 @@
+-------------------------------------------------------------------------------
+Test set: jda.test.app.courseman.qproc.query.TranslateClassJoin2ObjectJoinExpressionTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.211 sec <<< FAILURE!
+doValidTranslation(jda.test.app.courseman.qproc.query.TranslateClassJoin2ObjectJoinExpressionTest)  Time elapsed: 0.051 sec  <<< ERROR!
+jda.modules.common.exceptions.DataSourceException: [DataSourceException.FAIL_TO_UPDATE_OBJECT_BY_QUERY] L?i c?p nh?t d? li?u b?ng truy v?n: create table test_extended.Student(id varchar(6),name varchar(30),dob varchar(15),address_id Int,email varchar(30),sclass_id Int,constraint test_extended_Studentpk primary key(id),constraint test_extended_Studentfk1 foreign key(address_id) references test_extended.City(id) on update restrict,constraint test_extended_Studentfk2 foreign key(sclass_id) references test_extended.SClass(id) on update restrict) (dòng d? li?u: )
+	at jda.modules.dodm.osm.relational.RelationalOSMBasic.executeUpdate(RelationalOSMBasic.java:532)
+	at jda.modules.dodm.osm.relational.RelationalOSMBasic.createClassStore(RelationalOSMBasic.java:6814)
+	at jda.modules.dodm.dom.DOMBasic.addClass(DOMBasic.java:577)
+	at jda.modules.dodm.DODMBasic.addClass(DODMBasic.java:363)
+	at jda.test.dodm.DODMBasicTester.registerClass(DODMBasicTester.java:373)
+	at jda.test.dodm.DODMBasicTester.registerClass(DODMBasicTester.java:359)
+	at jda.test.app.courseman.qproc.query.TranslateClassJoin2ObjectJoinExpressionTest.doTranslation(TranslateClassJoin2ObjectJoinExpressionTest.java:75)
+	at jda.test.app.courseman.qproc.query.TranslateClassJoin2ObjectJoinExpressionTest.doValidTranslation(TranslateClassJoin2ObjectJoinExpressionTest.java:113)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: java.sql.SQLException: Constraint 'TEST_EXTENDED_STUDENTFK1' is invalid: referenced table CITY does not exist.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(SQLExceptionFactory.java:115)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Util.java:230)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(TransactionResourceImpl.java:431)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(TransactionResourceImpl.java:360)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(EmbedConnection.java:2405)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(ConnectionChild.java:88)
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(EmbedStatement.java:697)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeLargeUpdate(EmbedStatement.java:183)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeUpdate(EmbedStatement.java:172)
+	at jda.modules.dodm.osm.relational.RelationalOSMBasic.executeUpdate(RelationalOSMBasic.java:529)
+	... 40 more
+Caused by: ERROR X0Y46: Constraint 'TEST_EXTENDED_STUDENTFK1' is invalid: referenced table CITY does not exist.
+	at org.apache.derby.shared.common.error.StandardException.newException(StandardException.java:300)
+	at org.apache.derby.shared.common.error.StandardException.newException(StandardException.java:295)
+	at org.apache.derby.impl.sql.compile.FKConstraintDefinitionNode.bind(FKConstraintDefinitionNode.java:102)
+	at org.apache.derby.impl.sql.compile.TableElementList.validate(TableElementList.java:235)
+	at org.apache.derby.impl.sql.compile.CreateTableNode.bindStatement(CreateTableNode.java:394)
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(GenericStatement.java:401)
+	at org.apache.derby.impl.sql.GenericStatement.prepare(GenericStatement.java:99)
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(GenericLanguageConnectionContext.java:1114)
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(EmbedStatement.java:689)
+	... 43 more
+
+doInvalidTranslation(jda.test.app.courseman.qproc.query.TranslateClassJoin2ObjectJoinExpressionTest)  Time elapsed: 0.159 sec  <<< ERROR!
+jda.modules.common.exceptions.DataSourceException: [DataSourceException.FAIL_TO_UPDATE_OBJECT_BY_QUERY] L?i c?p nh?t d? li?u b?ng truy v?n: create table test_extended.Student(id varchar(6),name varchar(30),dob varchar(15),address_id Int,email varchar(30),sclass_id Int,constraint test_extended_Studentpk primary key(id),constraint test_extended_Studentfk1 foreign key(address_id) references test_extended.City(id) on update restrict,constraint test_extended_Studentfk2 foreign key(sclass_id) references test_extended.SClass(id) on update restrict) (dòng d? li?u: )
+	at jda.modules.dodm.osm.relational.RelationalOSMBasic.executeUpdate(RelationalOSMBasic.java:532)
+	at jda.modules.dodm.osm.relational.RelationalOSMBasic.createClassStore(RelationalOSMBasic.java:6814)
+	at jda.modules.dodm.dom.DOMBasic.addClass(DOMBasic.java:577)
+	at jda.modules.dodm.DODMBasic.addClass(DODMBasic.java:363)
+	at jda.test.dodm.DODMBasicTester.registerClass(DODMBasicTester.java:373)
+	at jda.test.dodm.DODMBasicTester.registerClass(DODMBasicTester.java:359)
+	at jda.test.app.courseman.qproc.query.TranslateClassJoin2ObjectJoinExpressionTest.doTranslation(TranslateClassJoin2ObjectJoinExpressionTest.java:75)
+	at jda.test.app.courseman.qproc.query.TranslateClassJoin2ObjectJoinExpressionTest.doInvalidTranslation(TranslateClassJoin2ObjectJoinExpressionTest.java:128)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: java.sql.SQLException: Constraint 'TEST_EXTENDED_STUDENTFK1' is invalid: referenced table CITY does not exist.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(SQLExceptionFactory.java:115)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Util.java:230)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(TransactionResourceImpl.java:431)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(TransactionResourceImpl.java:360)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(EmbedConnection.java:2405)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(ConnectionChild.java:88)
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(EmbedStatement.java:697)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeLargeUpdate(EmbedStatement.java:183)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeUpdate(EmbedStatement.java:172)
+	at jda.modules.dodm.osm.relational.RelationalOSMBasic.executeUpdate(RelationalOSMBasic.java:529)
+	... 40 more
+Caused by: ERROR X0Y46: Constraint 'TEST_EXTENDED_STUDENTFK1' is invalid: referenced table CITY does not exist.
+	at org.apache.derby.shared.common.error.StandardException.newException(StandardException.java:300)
+	at org.apache.derby.shared.common.error.StandardException.newException(StandardException.java:295)
+	at org.apache.derby.impl.sql.compile.FKConstraintDefinitionNode.bind(FKConstraintDefinitionNode.java:102)
+	at org.apache.derby.impl.sql.compile.TableElementList.validate(TableElementList.java:235)
+	at org.apache.derby.impl.sql.compile.CreateTableNode.bindStatement(CreateTableNode.java:394)
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(GenericStatement.java:401)
+	at org.apache.derby.impl.sql.GenericStatement.prepare(GenericStatement.java:99)
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(GenericLanguageConnectionContext.java:1114)
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(EmbedStatement.java:689)
+	... 43 more
+
