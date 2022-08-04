@@ -1,9 +1,5 @@
 # JDA project structure
    
-JDA (formerly known as `JDomainApp`) is a [multi-module Maven project](https://books.sonatype.com/mvnex-book/reference/multimodule.html). 
-
-In Maven's terminology, a **module** is implemented as an **artifact project**.
-
 JDA has a root (top-level) project whose structure is as follows:
 
 ```
