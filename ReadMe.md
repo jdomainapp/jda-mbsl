@@ -37,10 +37,10 @@ Run:
 config built path: Postgresql (https://mvnrepository.com/artifact/org.postgresql/postgresql)'
 # Code:
 ## Unified model:
-![Conceptual Model: CM](https://github.com/jdomainapp/jda-mbsl/agl_cm.PNG)
+![Conceptual Model: CM](docs/images/agl_cm.PNG)
 ``private void genGraph()`` 
 ### in class: ActivityModel transform CMT
-![ Abstract Syntax Model: ASM](https://github.com/jdomainapp/jda-mbsl/agl_cmt.PNG)
+![ Abstract Syntax Model: ASM](docs/images/agl_cmt.PNG)
 ### Result: Concrete Syntax Model (CSM) in the class: EnrolmentMgmt
-![Concrete Syntax Model: CSM](https://github.com/jdomainapp/jda-mbsl/agl_csm.PNG)
+![Concrete Syntax Model: CSM](docs/images/agl_csm.PNG)
 
