@@ -29,7 +29,7 @@ The tool can be executed within an Integrated evelopment Environment (IDE), such
    - Create User: admin; Pass: password
    - Create a database name: domainds
 ## running a pattern form: Decisional, forked, joined, merged, sequential (in jda\modules\mbsl\src\test\java\org\jda\example\courseman\software):
-![running a pattern form](docs/images/sources.png)
+![running a pattern form](docs/images/sourses.png)
 # Code:
 ## Unified model:
 ![Conceptual Model: CM](docs/images/agl_cm.PNG)
