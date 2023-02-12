@@ -1,7 +1,12 @@
-# JDA project structure
-   
-A repository for tool AGL: Incorporating Behavioral Aspects into Domain-Driven Design:
+# MBSL (a.k.a AGL)
+A repository for tool AGL: Incorporating Behavioral Aspects into Domain-Driven Design.
 
+***Version: current***
+- This is the current release version
+
+
+# Project structure
+   
 ```
 jda:root	-> the root project
   common  -> module-common: (base) module used by other modules

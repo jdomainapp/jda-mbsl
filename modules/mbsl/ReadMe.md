@@ -1,5 +1,9 @@
-# JDA Module: MBSL
+# JDA Module: MBSL (a.k.a AGL)
 Implements the MBSL language.
+
+***Version: current***
+- This is the current release version
+
 Run:
 # 1. PostgreSQL:
 ## - Create User: admin; Pass: password
