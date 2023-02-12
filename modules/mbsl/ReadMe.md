@@ -1,4 +1,10 @@
 # JDA Module: MBSL
+*** Version: 1.1-clean-initial ***
+- This version has been cleaned from `v1.0-bak` to streamline the Maven's module configuration and to remove all the unnecessary artifacts and resources.
+- `jda-mbsl` has been retested to ensure that it still works as before
+- The source code has not been changed in anyway. 
+- This version is thus used as the starting point for any further development.
+
 Implements the MBSL language.
 Run:
 # 1. PostgreSQL:
