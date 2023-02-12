@@ -1,1 +1,0 @@
-# OQL - Object Query Language

@@ -1,2 +1,0 @@
-# ModuleExportDocument - Export to HTML document
-A **system** software module that automatically generates the Swing view of an existing software module to HTML. This can be used for generating a technical document for a software module. 
