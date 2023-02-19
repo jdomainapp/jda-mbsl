@@ -1,13 +1,13 @@
 # MBSL (a.k.a AGL)
 A repository for tool AGL: Incorporating Behavioral Aspects into Domain-Driven Design.
 This is a single, concise, pictorial and visual summary of the main findings of the article
-![Graphical abstracts](docs/images/Graphical abstracts.JPG)
+![Graphical abstracts](docs/images/Graphical abstracts.PNG)
 ***Version: current***
 - This is the current release version
 
 
 # Project structure
-   ![Tool implementation in the jDOMAINAPP framework](docs/images/struct-tool.JPG)
+   ![Tool implementation in the jDOMAINAPP framework](docs/images/struct-tool.PNG)
 ```
 jda:root	-> the root project
   common  -> module-common: (base) module used by other modules
