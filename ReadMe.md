@@ -2,6 +2,8 @@
 A repository for tool AGL: Incorporating Behavioral Aspects into Domain-Driven Design.
 ### This is a single, concise, pictorial and visual summary of the main findings of the article
 ![Graphical abstracts](docs/images/Graphicalabstracts.png)
+
+
 ***Version: current***
 - This is the current release version
 
