@@ -2,10 +2,12 @@ package jda.modules.mbsl.model.graph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jda.modules.common.Toolkit;
 import jda.modules.common.exceptions.ConstraintViolationException;
 import jda.modules.common.exceptions.NotPossibleException;
+import jda.modules.dcsl.syntax.DOpt;
 import jda.modules.mbsl.model.appmodules.ModuleAct;
 import jda.mosa.controller.ControllerBasic;
 import jda.mosa.module.ModuleService;
@@ -19,6 +21,10 @@ import jda.mosa.module.ModuleService;
  * @version 4.0
  */
 public class Node {
+  // v5.6.0: added id 
+  private int id;
+  private static int idCounter = 0;
+  
   private String label;
   private Class refCls;
   private Class serviceCls;
@@ -34,11 +40,28 @@ public class Node {
   private boolean stopped;
   
   public Node(String label, Class refCls, Class serviceCls) {
+    this.id = nextID(null);
     this.label = label;
     this.refCls = refCls;
     this.serviceCls = serviceCls;
   }
 
+  @DOpt(type=DOpt.Type.AutoAttributeValueGen)
+  private static int nextID(Integer currID) {
+  // automatically generate the next student id
+    if (currID == null) { // generate one
+      idCounter++;
+      return idCounter;
+    } else { // update
+      int num = currID.intValue();
+      
+      if (num > idCounter) {
+        idCounter=num;
+      }   
+      return currID;
+    }
+  }
+  
   /**
    * @modifies this.{@link #actSeq}
    * @effects 
@@ -85,6 +108,25 @@ public class Node {
    */
   public Class getRefCls() {
     return refCls;
+  }
+  
+
+  /**
+   * @effects 
+   *  set this.{@link #refModuleService} = refModuleService
+   * @version 5.6 
+   * 
+   */
+  public void setRefModuleService(ModuleService refModuleService) {
+    this.refModuleService = refModuleService;
+  }
+
+  /**
+   * @effects 
+   *  return this.label
+   */
+  public String getLabel() {
+    return label;
   }
   
 //  /**
@@ -234,7 +276,9 @@ public class Node {
    *  </pre>
    */
   protected void activateRefModuleService(final ModuleService actMService) {
-    if (refModuleService == null) { 
+    
+    if (refModuleService == null) {
+      // v5.6: should not happen, because we must have set it through setRefModuleService...
       // refModuleService has not been initialised, initialise it
       if (serviceCls != null) {
         if (actMService.isDataService(serviceCls)) {
@@ -316,12 +360,9 @@ public class Node {
    */
   @Override
   public String toString() {
-    return getClass().getSimpleName()+" (" + label + ")";
+    return getClass().getSimpleName()+String.format("(%d, %s)", id, label);
   }
 
-  /* (non-Javadoc)
-   * @see java.lang.Object#hashCode()
-   */
   /**
    * @effects 
    * 
@@ -329,15 +370,9 @@ public class Node {
    */
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((label == null) ? 0 : label.hashCode());
-    return result;
+    return Objects.hash(id);
   }
 
-  /* (non-Javadoc)
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
   /**
    * @effects 
    * 
@@ -352,11 +387,7 @@ public class Node {
     if (getClass() != obj.getClass())
       return false;
     Node other = (Node) obj;
-    if (label == null) {
-      if (other.label != null)
-        return false;
-    } else if (!label.equals(other.label))
-      return false;
-    return true;
+    return id == other.id;
   }
+
 }

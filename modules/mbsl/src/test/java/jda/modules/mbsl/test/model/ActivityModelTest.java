@@ -45,8 +45,10 @@ public class ActivityModelTest {
     
     System.out.println(m);
     
-    List<Class> initClses = m.getInitClses();
-    System.out.printf("Initial classes: %s%n", initClses);
+//    List<Class> initClses = m.getInitClses();
+//    System.out.printf("Initial classes: %s%n", initClses);
+    List<String> initNodes = m.getInitNodes();
+    System.out.printf("Initial classes: %s%n", initNodes);
     
     return m;
   }
