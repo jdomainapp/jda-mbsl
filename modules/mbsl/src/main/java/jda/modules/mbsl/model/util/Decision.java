@@ -7,6 +7,8 @@ import jda.modules.mbsl.model.graph.Node;
 /**
  * @overview 
  *  Represents domain classes that serve as the decision class (of the decision node). 
+ *
+ *  <p>Subtypes must implement method {@link #evaluate(Node, Object[]))} with the domain-specific decision logic.
  *  
  * @author Duc Minh Le (ducmle)
  *

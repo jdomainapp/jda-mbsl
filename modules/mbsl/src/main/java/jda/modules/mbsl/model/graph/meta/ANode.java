@@ -67,9 +67,20 @@ public @interface ANode {
    *  the sequence of out-classes, i.e. those mapped to the 
    *  target nodes of a sequence of activity edges originating from this node <br>
    *  Default: []  
+   * @deprecated (as of 5.6.0) use #outNodes() instead
    */
   Class[] outClses() default {};
 
+  /**
+   * @effects 
+   *  the sequence of out-classes, i.e. those mapped to the 
+   *  target nodes of a sequence of activity edges originating from this node <br>
+   *  Default: []  
+   * @version 5.6.0
+   */
+  String[] outNodes() default {};
+
+  
   /**
    *  Whether or not this is the initial class<br>
    *  Default: false

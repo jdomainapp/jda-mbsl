@@ -11,5 +11,9 @@ public enum NodeType {
   Decision,
   Fork,
   Join,
-  Merge;
+  Merge,
+  // v5.6
+  /* coordinates between other nodes, passing along their data. It does not pass its own data (if any) along*/
+  Coordinator
+  ;
 }

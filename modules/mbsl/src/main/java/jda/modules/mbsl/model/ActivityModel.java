@@ -1,11 +1,13 @@
 package jda.modules.mbsl.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
+import jda.modules.common.CommonConstants;
+import jda.modules.common.Toolkit;
 import jda.modules.common.exceptions.ConstraintViolationException;
 import jda.modules.common.exceptions.NotFoundException;
 import jda.modules.common.exceptions.NotPossibleException;
@@ -31,8 +33,13 @@ import jda.mosa.module.ModuleService;
  * @author Duc Minh Le (ducmle)
  *
  * @version 
+ * - 5.4: created<br>
+ * - 5.6: updated to use multi-map for node and edge maps
  */
 public class ActivityModel {
+  
+  private static final boolean debug = Toolkit.getDebug(ActivityGraph.class);
+  
   /**name of the activity model*/
   private String name;
   /**activity domain class*/
@@ -40,18 +47,22 @@ public class ActivityModel {
   /**referenced domain classes*/
   private List<Class> refClses;
 
-  /**initial classes */
-  private List<Class> initClses;
+  /**initial classes
+   **/
+// v5.6: private List<Class> initClses;
+  
+  /* v5.6 */
+  private List<String> initNodes;
   
   /**the domain schema to which all the domain classes contained in this are registered*/
   private DSMBasic dsm;
 
   ///// helper data structures 
   /** keys = {@link #refClses} /\ values = {a | exists k in keys. a = assign(ANode,k)} */
-  private Map<Class,ANode> graphNodeCfgMap;
+  private Map<Object,ANode> graphNodeCfgMap;
 
   /** keys = {@link #refClses} /\ values = {o | exists k in keys. o = assign(OutCls,k)} */
-  private Map<Class,Class[]> graphOutClsCfgMap;
+//  private Map<Object,String[]> graphOutClsCfgMap;
   
   private ActivityGraph graph;
 
@@ -63,7 +74,8 @@ public class ActivityModel {
     this.name = name;
     this.dsm = dsm;
     refClses = new ArrayList<>();
-    initClses = new ArrayList<>();
+    //initClses = new ArrayList<>();
+    initNodes = new ArrayList<>();
   }
 
 
@@ -93,23 +105,31 @@ public class ActivityModel {
           new Object[] {actCls});
     }
     
-    Class c; Class[] outClses;
+    String label; String[] outNodes;
     for (ANode ncfg : graphCfgs) {
-      c = ncfg.refCls();
       
-      if (ncfg.init()) initClses.add(c);
+      Class c = ncfg.refCls();
+      
+      label = ncfg.label();
+      
+      if (ncfg.init()) {
+        //initClses.add(c);
+        initNodes.add(label);
+      }
 
       if (graphNodeCfgMap == null) graphNodeCfgMap = new LinkedHashMap<>();
-      graphNodeCfgMap.put(c, ncfg);
+      graphNodeCfgMap.put(label, ncfg);
       
-      outClses = ncfg.outClses();
-      if (graphOutClsCfgMap == null) graphOutClsCfgMap = new LinkedHashMap<>();
-      if (outClses.length > 0)
-        graphOutClsCfgMap.put(c, outClses);
+//      outNodes = ncfg.outNodes();
+//      
+//      if (graphOutClsCfgMap == null) graphOutClsCfgMap = new LinkedHashMap<>();
+//      
+//      if (outNodes.length > 0)
+//        graphOutClsCfgMap.put(label, outNodes);
     }
     
     // if initClses is empty: error
-    if (initClses.isEmpty())
+    if (initNodes.isEmpty())
       throw new ConstraintViolationException(DomainMessage.ERR_GRAPH_HAS_NO_INITIAL_NODES, new Object[] {actCls});
   }
   
@@ -166,9 +186,18 @@ public class ActivityModel {
   /**
    * @effects 
    *  return the initial classes (in the activity flow order)
+   *  @deprecated as of v5.6, use {@link #getInitNodes()} instead
    */
-  public List<Class> getInitClses() {
-    return initClses;
+//  public List<Class> getInitClses() {
+//    return initClses;
+//  }
+//  
+  /**
+   * @effects 
+   *  return the initial nodes (in the activity flow order)
+   */
+  public List<String> getInitNodes() {
+    return initNodes;
   }
   
   /**
@@ -232,37 +261,60 @@ public class ActivityModel {
   /**
    * @effects
    *  if {@link #graph} is null
-   *    generate {@link #graph}
+   *    generate {@link #graph}, using actMService to initialise the corresponding modules of the nodes
    *    
    *  return {@link #graph}
    */
-  public ActivityGraph getGraph() throws ConstraintViolationException {
+  public ActivityGraph getGraph(ModuleService actMService) throws ConstraintViolationException {
     if (graph == null) {
       // generate graph (once)
-      genGraph();
+      genGraph(actMService);
+      
+      // debug
+      if (debug == true)
+        System.out.println(graph);
+
     }
     
     return graph;
   }
 
   /**
-   * @modifies this.{@link #graph}
+   * @modifies this.{@link #graph}, this.{@link #graphNodeCfgMap}
    * @effects 
-   *  create {@link #graph} as a new {@link ActivityGraph}, from the graph configurations defined in {@link #activityCls}
+   *  create {@link #graph} as a new {@link ActivityGraph}, from the graph configurations defined in {@link #activityCls}.
+   *  
+   *  Elements of {@link #graphNodeCfgMap} are popped out for processing.
+   *  
+   *  @version 
+   *  - 5.6: improved to use ANode.label as node key
    */
-  private void genGraph() throws ConstraintViolationException {
+  private void genGraph(ModuleService actMService) throws ConstraintViolationException {
     graph = new ActivityGraph();
     
+    // start from the initial node
+    String initNLabel = initNodes.get(0);
+    ANode aNode = graphNodeCfgMap.get(initNLabel);
+    
+    Map<String, Node> nodeMap = new HashMap<>();
+    Node n = genSubgraph(aNode, actMService, null, nodeMap);
+    
+    /* v5.6
     Class c, s; ANode a;
     String l; NodeType t; MAct[] P; Node n; String[] attribNames;
-    Map<Class,Node> nodeMap = new LinkedHashMap<>();
+    Map<Object,Node> nodeMap = new LinkedHashMap<>();
     List<ModuleAct> optSeq = null;
     
     // create nodes without edges
-    for (Entry<Class,ANode> e : graphNodeCfgMap.entrySet()) {
-      c = e.getKey();
+    for (Entry<Object,ANode> e : graphNodeCfgMap.entrySet()) {
+      Object label = e.getKey();
       a = e.getValue();
-      l = "M"+c.getSimpleName();
+      c = a.refCls();
+      if (!a.label().equals(CommonConstants.NullString))
+        l = a.label();//5.6: "M"+c.getSimpleName();
+      else 
+        l = "M"+c.getSimpleName();
+        
       t = a.nodeType();
       P = a.actSeq();
       s = a.serviceCls();
@@ -270,7 +322,6 @@ public class ActivityModel {
       
       // create node based on t
       n = NodeFactory.createNode(t, l, c, s);
-      //n.setTransformResult(a.transformResult());
       
       // create ModuleOpt sequence of n
       if (P.length > 0) {
@@ -288,7 +339,7 @@ public class ActivityModel {
       
       // add n to graph
       graph.addNode(n);
-      nodeMap.put(c, n);
+      nodeMap.put(l, n);
       
       // if c is initial class then n is the initial node
       if (initClses.contains(c)) {
@@ -297,16 +348,20 @@ public class ActivityModel {
     }
     
     // create out-edges of each node, and edges of g
-    Class[] outClses; // o
+    // v5.6: use actMService to find the exact referenced module of each node
+    // trace through the path of each node from an init node to ensure that
+    // the referenced module is correct
+
+    String[] outNodes; // o
     Node no; Edge edge;
-    for (Entry<Class,Node> e : nodeMap.entrySet()) {
-      c = e.getKey();
+    for (Entry<Object,Node> e : nodeMap.entrySet()) {
+      Object label = e.getKey();
       n = e.getValue();
-      outClses = graphOutClsCfgMap.get(c);
+      outNodes = graphOutClsCfgMap.get(label);
       
-      if (outClses != null) {
-        for (Class co : outClses) {
-          no = nodeMap.get(co);
+      if (outNodes != null) {
+        for (String outNode : outNodes) {
+          no = nodeMap.get(outNode);
           edge = new Edge(n, no);
           n.addOutEdge(edge);
           
@@ -319,16 +374,160 @@ public class ActivityModel {
         }
       }
     }
+    */
   }
+
+  /**
+   * @effects 
+   *    Depth-first traverse the graph from aNode to create every node in the path with 
+   *    the suitable referenced module 
+   *    
+   * @version 5.6
+   */
+  private Node genSubgraph(ANode aNode, ModuleService actMService, ModuleService refModuleService, 
+      Map<String, Node> nodeMap) {
+    
+    // find the referenced module
+    ModuleService myRefModuleService;
+    if (refModuleService == null) {
+      myRefModuleService = actMService.getModule().getDescendantDataService(aNode.refCls());
+    } else {
+      myRefModuleService = refModuleService.getModule().getDescendantDataService(aNode.refCls());
+    }
+    
+    Node n = createNode(aNode);
+    
+    // create action sequence
+    createModuleActSeq(n, aNode.actSeq());
+
+    n.setRefModuleService(myRefModuleService);
+    
+    // add n to graph
+    graph.addNode(n);
+    
+    if (aNode.init()) {
+      graph.addInitNode(n);
+    } 
+    
+    // put n in the stack
+    nodeMap.put(aNode.label(), n);
+    
+    // now traverse depth-first search from this node to create other nodes and the edges
+    String[] outNodes = aNode.outNodes();
+    if (outNodes.length > 0) {
+      for (String outNodeLabel: outNodes) {
+        Node nout = nodeMap.get(outNodeLabel);
+        if (nout == null) {
+          // create this out node
+          ANode outNode = graphNodeCfgMap.get(outNodeLabel);
+          nout = genSubgraph(outNode, actMService, myRefModuleService, nodeMap);
+        }
+        
+        
+        // create edge (n, nout)
+        Edge edge = new Edge(n, nout);
+        // if no is a join node the update its pre
+        if (nout instanceof JoinNode) {
+          ((JoinNode) nout).addPreNode(n);
+        }
+        
+        n.addOutEdge(edge);
+        graph.addEdge(edge);
+      }
+    }
+    
+    return n;
+  }
+
+
+//  /**
+//   * @effects 
+//   * 
+//   * @version 
+//   * 
+//   */
+//  private Node genNode(ANode aNode, ModuleService myRefModuleService) {
+//    Node n = createNode(aNode);
+//    
+//    // create action sequence
+//    createModuleActSeq(n, aNode.actSeq());
+//
+//    n.setRefModuleService(myRefModuleService);
+//    
+//    // add n to graph
+//    graph.addNode(n);
+//    
+//    if (aNode.init()) {
+//      graph.addInitNode(n);
+//    } 
+//    
+//    return n;
+//  }
+
+
+  /**
+   * @effects 
+   *  creates and return a {@link Node} show configuration is specified in <code>aNode</code>
+   *  
+   * @version 5.6
+   */
+  private Node createNode(ANode aNode) {
+    Class c = aNode.refCls();
+    
+    String l;
+    if (!aNode.label().equals(CommonConstants.NullString))
+      l = aNode.label();//5.6: "M"+c.getSimpleName();
+    else 
+      l = "M"+c.getSimpleName();
+      
+    NodeType t = aNode.nodeType();
+    Class s = aNode.serviceCls();
+    if (s == Null.class) s = null;
+    
+    // create node based on t
+    Node n = NodeFactory.createNode(t, l, c, s);
+    
+    return n;
+  }
+
+
+  /**
+   * @modifies n 
+   * 
+   * @effects 
+   *  creates and sets into n {@link ModuleAct} objects that correspond to <code>actSeq</code>
+   * 
+   * @version 5.6
+   * 
+   */
+  private void createModuleActSeq(Node n, MAct[] actSeq) {
+    if (actSeq.length > 0) {
+      List<ModuleAct> optSeq = new ArrayList<>();
+
+      for (MAct p : actSeq) {
+        optSeq.add(new ModuleAct(p.actName(), 
+            p.endStates().length == 0 ? null : p.endStates(),
+            p.attribNames().length == 0 ? null : p.attribNames(),    
+            n));
+      }
+      
+      n.setActSeq(optSeq);
+    }
+  }
+
 
   /**
    * @effects 
    *  executes this {@link #graph} using <tt>actMService</tt> as module service of the activity module of {@link #activityCls}.  
    *  
    *  <p>throws NotPossibleException if failed  
+   * @version 
+   * - 5.6: improved getGraph() to use actMService to initialise its nodes
    */
   public void exec(ModuleService actMService, Object...args) throws NotPossibleException {
-    getGraph(); // make sure that activity graph is generated
+    
+    // v5.6: getGraph(); // make sure that activity graph is generated
+    getGraph(actMService);
     
     graph.exec(actMService, args);
   }

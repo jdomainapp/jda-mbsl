@@ -3,7 +3,6 @@ package jda.modules.mbsl.test.graph;
 import org.junit.Test;
 
 import jda.modules.mbsl.model.ActivityModel;
-import jda.modules.mbsl.model.graph.ActivityGraph;
 import jda.modules.mbsl.test.model.ActivityModelTest;
 
 /**
@@ -20,9 +19,10 @@ public class AGraphGenTest {
     
     System.out.println(m);
     
-    ActivityGraph g = m.getGraph();
+    //TODO: need the root ModuleService as parameter
+//    ActivityGraph g = m.getGraph(null );
     
-    System.out.println(g);
+//    System.out.println(g);
     
     // print ModuleOpts of the nodes
   }
