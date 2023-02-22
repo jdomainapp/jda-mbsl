@@ -297,6 +297,7 @@ public class ActivityModel {
     ANode aNode = graphNodeCfgMap.get(initNLabel);
     
     Map<String, Node> nodeMap = new HashMap<>();
+        
     Node n = genSubgraph(aNode, actMService, null, nodeMap);
     
     /* v5.6
@@ -387,19 +388,33 @@ public class ActivityModel {
   private Node genSubgraph(ANode aNode, ModuleService actMService, ModuleService refModuleService, 
       Map<String, Node> nodeMap) {
     
-    // find the referenced module
-    ModuleService myRefModuleService;
-    if (refModuleService == null) {
-      myRefModuleService = actMService.getModule().getDescendantDataService(aNode.refCls());
-    } else {
-      myRefModuleService = refModuleService.getModule().getDescendantDataService(aNode.refCls());
-    }
     
     Node n = createNode(aNode);
     
     // create action sequence
     createModuleActSeq(n, aNode.actSeq());
 
+    // find the referenced module
+//    ModuleService myRefModuleService = lookUpRefModuleService(actMService, refModuleService, aNode);
+    ModuleService myRefModuleService, asParentModuleService;
+    
+    if (refModuleService == null) {
+      // first node
+      myRefModuleService = actMService.getModule().getChildDataService(actMService, aNode.refCls());
+      asParentModuleService = myRefModuleService;
+    } else {
+      // rest of the nodes
+      if (aNode.nodeType().isDecision()) {
+        // control nodes do not have module service
+        myRefModuleService = null;
+        asParentModuleService = refModuleService.getParent();
+      } else {
+        // other node types
+        myRefModuleService = refModuleService.getModule().getChildDataService(refModuleService, aNode.refCls());
+        asParentModuleService = myRefModuleService;
+      }      
+    }
+    
     n.setRefModuleService(myRefModuleService);
     
     // add n to graph
@@ -420,7 +435,7 @@ public class ActivityModel {
         if (nout == null) {
           // create this out node
           ANode outNode = graphNodeCfgMap.get(outNodeLabel);
-          nout = genSubgraph(outNode, actMService, myRefModuleService, nodeMap);
+          nout = genSubgraph(outNode, actMService, asParentModuleService, nodeMap);
         }
         
         
@@ -438,31 +453,6 @@ public class ActivityModel {
     
     return n;
   }
-
-
-//  /**
-//   * @effects 
-//   * 
-//   * @version 
-//   * 
-//   */
-//  private Node genNode(ANode aNode, ModuleService myRefModuleService) {
-//    Node n = createNode(aNode);
-//    
-//    // create action sequence
-//    createModuleActSeq(n, aNode.actSeq());
-//
-//    n.setRefModuleService(myRefModuleService);
-//    
-//    // add n to graph
-//    graph.addNode(n);
-//    
-//    if (aNode.init()) {
-//      graph.addInitNode(n);
-//    } 
-//    
-//    return n;
-//  }
 
 
   /**

@@ -21,6 +21,8 @@ import jda.mosa.module.ModuleService;
  * @version 4.0
  */
 public class Node {
+//  private static Logger logger = (Logger) LoggerFactory.getLogger(Node.class.getSimpleName());
+  
   // v5.6.0: added id 
   private int id;
   private static int idCounter = 0;
@@ -180,7 +182,7 @@ public class Node {
     Object[] results = execSelf(src, actMService, args);
     
     // (4)
-    execOffer(src, actMService, results);
+    execOffer(src, actMService, args, results);
   }
   
   /**
@@ -248,8 +250,10 @@ public class Node {
   /**
    * @effects 
    *  offer tokens to outgoing edges 
+   * @version 
+   * - 5.6: support coordinator node
    */
-  protected void execOffer(Node src, ModuleService actMService, Object...results) throws NotPossibleException {
+  protected void execOffer(Node src, ModuleService actMService, Object[] args, Object...results) throws NotPossibleException {
     // execute outgoing edges
     // TODO: support multiple outgoing edges for action nodes?
     // (control nodes are handled separately by each such type of node)
@@ -261,6 +265,7 @@ public class Node {
 //        transfResult = results;
 //      }
       
+      // normal node: pass its data long
       out.get(0).exec(actMService, results);
     }    
   }
@@ -277,6 +282,7 @@ public class Node {
    */
   protected void activateRefModuleService(final ModuleService actMService) {
     
+    /* v5.6: if specified for this node, it must have already been set by setRefModuleService
     if (refModuleService == null) {
       // v5.6: should not happen, because we must have set it through setRefModuleService...
       // refModuleService has not been initialised, initialise it
@@ -291,9 +297,12 @@ public class Node {
         }
       }
     }
+    */
     
     if (refModuleService != null) {
       if (refModuleService.hasView()) refModuleService.activateView();
+    } else {
+      System.err.printf("%s: referenced module service not specified BUT requested to activate.%n", toString());
     }
   }
   

@@ -27,6 +27,8 @@ public class NodeFactory {
     nodeClsMap.put(NodeType.Fork, ForkNode.class);
     nodeClsMap.put(NodeType.Join, JoinNode.class);
     nodeClsMap.put(NodeType.Merge, MergeNode.class);
+    // v5.6
+    nodeClsMap.put(NodeType.Coordinator, CoordinatorNode.class);
   }
 
   /**
