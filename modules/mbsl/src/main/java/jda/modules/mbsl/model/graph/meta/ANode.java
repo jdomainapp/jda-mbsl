@@ -87,6 +87,9 @@ public @interface ANode {
    */
   boolean init() default false;
 
+  /** the subgraph zone to which this node belongs */
+  String zone() default CommonConstants.NullString;
+
 //  /**
 //   * (Optional) Whether or not this node performs the Transformation behaviour of the outgoing edge on behalf of this edge.  
 //   * <br>Default: false

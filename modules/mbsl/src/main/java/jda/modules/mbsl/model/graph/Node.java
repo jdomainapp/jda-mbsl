@@ -123,6 +123,17 @@ public class Node {
     this.refModuleService = refModuleService;
   }
 
+
+  /**
+   * @effects 
+   *  return this.{@link #refModuleService}
+   * @version 5.6 
+   * 
+   */
+  public ModuleService getRefModuleService() {
+    return this.refModuleService;
+  }
+  
   /**
    * @effects 
    *  return this.label

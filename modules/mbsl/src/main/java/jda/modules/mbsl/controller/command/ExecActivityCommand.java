@@ -3,6 +3,8 @@ package jda.modules.mbsl.controller.command;
 import jda.modules.common.concurrency.Task;
 import jda.modules.common.concurrency.TaskManager;
 import jda.modules.common.concurrency.Task.TaskName;
+import jda.modules.common.exceptions.NotFoundException;
+import jda.modules.common.exceptions.NotPossibleException;
 import jda.modules.dodm.dsm.DSMBasic;
 import jda.modules.mbsl.model.ActivityModel;
 import jda.mosa.controller.ControllerBasic.DataController;
@@ -63,7 +65,11 @@ public class ExecActivityCommand<C> extends DataControllerCommand {
      */
     @Override
     public void run() {
-      activityModel.exec(mService, serviceArgs);
+      try {
+        activityModel.exec(mService, serviceArgs);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
 
     /**

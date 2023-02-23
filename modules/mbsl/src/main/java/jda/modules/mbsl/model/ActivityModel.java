@@ -265,7 +265,7 @@ public class ActivityModel {
    *    
    *  return {@link #graph}
    */
-  public ActivityGraph getGraph(ModuleService actMService) throws ConstraintViolationException {
+  public ActivityGraph getGraph(ModuleService actMService) throws ConstraintViolationException, NotFoundException {
     if (graph == null) {
       // generate graph (once)
       genGraph(actMService);
@@ -289,7 +289,7 @@ public class ActivityModel {
    *  @version 
    *  - 5.6: improved to use ANode.label as node key
    */
-  private void genGraph(ModuleService actMService) throws ConstraintViolationException {
+  private void genGraph(ModuleService actMService) throws ConstraintViolationException, NotFoundException {
     graph = new ActivityGraph();
     
     // start from the initial node
@@ -298,7 +298,8 @@ public class ActivityModel {
     
     Map<String, Node> nodeMap = new HashMap<>();
         
-    Node n = genSubgraph(aNode, actMService, null, nodeMap);
+    ModuleService refModuleService = actMService.getModule().getChildDataService(actMService, aNode.refCls());
+    Node n = genSubgraph(aNode, actMService, refModuleService, nodeMap);
     
     /* v5.6
     Class c, s; ANode a;
@@ -385,37 +386,16 @@ public class ActivityModel {
    *    
    * @version 5.6
    */
-  private Node genSubgraph(ANode aNode, ModuleService actMService, ModuleService refModuleService, 
-      Map<String, Node> nodeMap) {
+  private Node genSubgraph(final ANode aNode, final ModuleService actMService, 
+      final ModuleService refModuleService, final Map<String, Node> nodeMap) throws NotFoundException {
     
     
     Node n = createNode(aNode);
     
     // create action sequence
     createModuleActSeq(n, aNode.actSeq());
-
-    // find the referenced module
-//    ModuleService myRefModuleService = lookUpRefModuleService(actMService, refModuleService, aNode);
-    ModuleService myRefModuleService, asParentModuleService;
     
-    if (refModuleService == null) {
-      // first node
-      myRefModuleService = actMService.getModule().getChildDataService(actMService, aNode.refCls());
-      asParentModuleService = myRefModuleService;
-    } else {
-      // rest of the nodes
-      if (aNode.nodeType().isDecision()) {
-        // control nodes do not have module service
-        myRefModuleService = null;
-        asParentModuleService = refModuleService.getParent();
-      } else {
-        // other node types
-        myRefModuleService = refModuleService.getModule().getChildDataService(refModuleService, aNode.refCls());
-        asParentModuleService = myRefModuleService;
-      }      
-    }
-    
-    n.setRefModuleService(myRefModuleService);
+    n.setRefModuleService(refModuleService);
     
     // add n to graph
     graph.addNode(n);
@@ -424,6 +404,9 @@ public class ActivityModel {
       graph.addInitNode(n);
     } 
     
+    if (debug)
+      System.out.println(String.format("Node(%s): refModuleService = %s%n", aNode.label(), refModuleService));
+    
     // put n in the stack
     nodeMap.put(aNode.label(), n);
     
@@ -431,11 +414,39 @@ public class ActivityModel {
     String[] outNodes = aNode.outNodes();
     if (outNodes.length > 0) {
       for (String outNodeLabel: outNodes) {
+        if (debug)
+          System.out.println("  -> Out node: " + outNodeLabel);
+        
         Node nout = nodeMap.get(outNodeLabel);
+
         if (nout == null) {
           // create this out node
           ANode outNode = graphNodeCfgMap.get(outNodeLabel);
-          nout = genSubgraph(outNode, actMService, asParentModuleService, nodeMap);
+          String zone = outNode.zone();
+          ModuleService childModuleService = null;
+          
+          if (!zone.equals(CommonConstants.NullString)) {
+            ModuleService currModuleService;
+            if (zone.equals("top")) {
+              currModuleService = actMService;
+            } else {
+              Node zoneNode = nodeMap.get(zone);
+              if (zoneNode == null) {
+                throw new NotFoundException(NotFoundException.Code.NODE_NOT_FOUND, new Object[] {zone});
+              }
+              
+              currModuleService = zoneNode.getRefModuleService();
+            }
+            
+            if (currModuleService != null) {
+              jda.mosa.module.Module currModule = currModuleService.getModule();
+              
+              childModuleService = currModule.
+                 getChildDataService(currModuleService, outNode.refCls());
+            }
+          }
+          
+          nout = genSubgraph(outNode, actMService, childModuleService, nodeMap);
         }
         
         
@@ -514,7 +525,7 @@ public class ActivityModel {
    * @version 
    * - 5.6: improved getGraph() to use actMService to initialise its nodes
    */
-  public void exec(ModuleService actMService, Object...args) throws NotPossibleException {
+  public void exec(ModuleService actMService, Object...args) throws NotPossibleException, NotFoundException {
     
     // v5.6: getGraph(); // make sure that activity graph is generated
     getGraph(actMService);
