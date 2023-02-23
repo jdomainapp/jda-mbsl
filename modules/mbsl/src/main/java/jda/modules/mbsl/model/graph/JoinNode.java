@@ -166,6 +166,7 @@ public class JoinNode extends ControlNode {
       results = transformResult(resultArr);
     } catch (Exception e) {
       // error occured -> cannot offer to outgoing edges
+      e.printStackTrace();
       toOffer = false;
     } finally {
       // clear input buffer and stop

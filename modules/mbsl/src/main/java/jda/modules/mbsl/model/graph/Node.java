@@ -41,6 +41,8 @@ public class Node {
   /** derived from the complete status of {@link #exec(Node, ControllerBasic, Object...)}*/
   private boolean stopped;
   
+  private List<ModuleAct> filterActs;
+  
   public Node(String label, Class refCls, Class serviceCls) {
     this.id = nextID(null);
     this.label = label;
@@ -74,7 +76,13 @@ public class Node {
     if (actSeq != null) {
       this.actSeq = new ArrayList<>();
       for (ModuleAct opt : actSeq) {
-        this.actSeq.add(opt);
+        // v5.6: see if there are filter actions
+        if (opt.isFilterAct()) {
+          if (this.filterActs == null) filterActs = new ArrayList<>();
+          filterActs.add(opt);
+        } else {
+          this.actSeq.add(opt);          
+        }
       }
     } else {
       this.actSeq = null;
@@ -197,11 +205,18 @@ public class Node {
   }
   
   /**
+   * @modifies <tt>args</stt>
    * @effects 
    *  receive tokens offered by <tt>src</tt>
+   *  
    */
   protected void execReceive(Node src, ModuleService actMService, Object...args) {
     // nothing to do here
+    if (filterActs != null) {
+      filterActs.forEach(filter -> {
+        Object[] filteredArgs = filter.getFilterObject().eval(args); }
+      );
+    }
   }
   
   /**

@@ -16,6 +16,7 @@ import jda.modules.dodm.dsm.DSMBasic;
 import jda.modules.mbsl.exceptions.DomainMessage;
 import jda.modules.mbsl.model.appmodules.ModuleAct;
 import jda.modules.mbsl.model.appmodules.meta.MAct;
+import jda.modules.mbsl.model.filter.NullFilter;
 import jda.modules.mbsl.model.graph.ActivityGraph;
 import jda.modules.mbsl.model.graph.Edge;
 import jda.modules.mbsl.model.graph.JoinNode;
@@ -508,7 +509,8 @@ public class ActivityModel {
       for (MAct p : actSeq) {
         optSeq.add(new ModuleAct(p.actName(), 
             p.endStates().length == 0 ? null : p.endStates(),
-            p.attribNames().length == 0 ? null : p.attribNames(),    
+            p.attribNames().length == 0 ? null : p.attribNames(),
+            p.filterType() == NullFilter.class ? null: p.filterType(), 
             n));
       }
       

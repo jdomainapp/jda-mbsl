@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import jda.modules.common.exceptions.NotFoundException;
 import jda.modules.common.exceptions.NotPossibleException;
+import jda.modules.mbsl.model.filter.FilterType;
 import jda.modules.mbsl.model.graph.Node;
 import jda.mosa.controller.ControllerBasic;
 import jda.mosa.controller.ControllerBasic.DataController;
@@ -29,6 +30,11 @@ public class ModuleAct implements MethodListener {
   private AppState[] endStates;
   private String[] attribNames;
   
+  private Class<? extends FilterType> filterType;
+  
+  // the singleton of filterType.
+  private FilterType filterObj;
+  
   private Node node;
   private Object result;
   
@@ -47,11 +53,20 @@ public class ModuleAct implements MethodListener {
    *
    * @version 
    */
-  public ModuleAct(MethodName optName, AppState[] endStates, String[] attribNames, Node node) {
+  public ModuleAct(MethodName optName, AppState[] endStates, String[] attribNames, Class<? extends FilterType> filterType, Node node) {
     this.actName = optName;
     this.endStates = endStates;
     this.attribNames = attribNames;
     this.node = node;
+    this.filterType = filterType;
+
+    if (filterType != null) {
+      try {
+        this.filterObj = filterType.getDeclaredConstructor().newInstance();
+      } catch (Exception e) {
+        e.printStackTrace();
+      } 
+    }
   }
 
   
@@ -62,6 +77,9 @@ public class ModuleAct implements MethodListener {
     return actName;
   }
 
+  public FilterType getFilterObject() {
+    return filterObj;
+  }
 
   /**
    * @effects return endState
@@ -337,6 +355,20 @@ public class ModuleAct implements MethodListener {
    */
   public Object getResult() {
     return result;
+  }
+
+
+  /**
+   * @effects 
+   *  if this is an input filtering action
+   *    return true
+   *  else
+   *    return false
+   * @version 5.6
+   * 
+   */
+  public boolean isFilterAct() {
+    return filterType != null;
   }
 
 }

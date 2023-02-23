@@ -6,6 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import jda.modules.mbsl.model.appmodules.ModuleAct;
+import jda.modules.mbsl.model.filter.FilterType;
+import jda.modules.mbsl.model.filter.NullFilter;
 import jda.mosa.controller.assets.util.AppState;
 import jda.mosa.controller.assets.util.MethodName;
 
@@ -41,4 +43,9 @@ public @interface MAct {
    * <br>Default: []
    */
   String[] attribNames() default {};
+
+  /**
+   * The input filtering class used to filter input data passed into the current module and return a different input for the subsequent actions to perform.
+   */
+  Class<? extends FilterType> filterType() default NullFilter.class;
 }
