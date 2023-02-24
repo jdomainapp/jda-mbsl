@@ -288,7 +288,7 @@ public class ActivityModel {
    *  Elements of {@link #graphNodeCfgMap} are popped out for processing.
    *  
    *  @version 
-   *  - 5.6: improved to use ANode.label as node key
+   *  - 5.6: improved to use ANode.label as node key and to support MAct.zone attribute
    */
   private void genGraph(ModuleService actMService) throws ConstraintViolationException, NotFoundException {
     graph = new ActivityGraph();

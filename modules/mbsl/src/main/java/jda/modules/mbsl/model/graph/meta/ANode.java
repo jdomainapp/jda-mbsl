@@ -73,8 +73,7 @@ public @interface ANode {
 
   /**
    * @effects 
-   *  the sequence of out-classes, i.e. those mapped to the 
-   *  target nodes of a sequence of activity edges originating from this node <br>
+   *  the sequence of nodes that are targets of the outgoing edges from this node<br>
    *  Default: []  
    * @version 5.6.0
    */
@@ -87,7 +86,11 @@ public @interface ANode {
    */
   boolean init() default false;
 
-  /** the subgraph zone to which this node belongs */
+  /** 
+   * v5.6: the subgraph zone to which this node belongs.  
+   * Zone is set to the label of an previous node in the traversal path whose referenced module service is the parent module of this node's module service.
+   * Via this parent module, we are thus able to look up the referenced module service of this node.
+   * */
   String zone() default CommonConstants.NullString;
 
 //  /**
